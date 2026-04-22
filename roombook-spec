@@ -1,0 +1,111 @@
+# Section 1 - Metadata
+- **Product Owner:** Samuel  
+- **Business Analyst:** Sergio  
+- **FE Dev:** Keiner  
+- **Dev:** Rubén  
+- **QA:** Pedro  
+- **Version:** 0.1  
+
+---
+
+# Section 2 - Functional Description
+Necesitamos crear una aplicación que permita a los empleados realizar reserva de salas de reuniones.  
+
+El sistema debe permitir al usuario:
+1. Seleccionar una fecha  
+2. Seleccionar una hora  
+3. Visualizar las salas disponibles  
+4. Escoger una sala  
+5. Añadir participantes  
+6. Confirmar la reserva  
+
+**Restricción especial:**  
+- Las salas VIP solo pueden ser reservadas por usuarios con mayores privilegios.  
+- Debe permitir reservar en sedes: Madrid, Bogotá y Mexico City.  
+
+---
+
+# Section 3 - Actors & Preconditions
+
+## Actores
+- **Actor primario:** Usuario autenticado con permisos para reservar una sala  
+- **Actores secundarios:**
+  - Usuarios invitados a la sala  
+  - Administrador del sistema (gestiona privilegios)  
+  - Managers o responsables (aprueban permisos)  
+
+## Precondiciones
+- El usuario debe estar autenticado y tener permisos de reserva  
+- Los managers deben aprobar los permisos  
+- Debe haber al menos una sala disponible  
+- Las salas tienen una capacidad máxima  
+- Las salas son físicas y pertenecen a una sede  
+- Las reservas solo pueden hacerse dentro del horario laboral  
+
+---
+
+# Section 4 - Main Flow
+1. Usuario autenticado entra a la ventana de reservas  
+2. Selecciona fecha y hora  
+3. Visualiza salas disponibles según permisos  
+4. Selecciona una sala  
+5. Añade participantes  
+6. Confirma la reserva  
+
+---
+
+# Section 5 - Business Rules
+- **BR-001:** Solo se permite la reserva de salas (no puestos)  
+- **BR-002:** Una sala no puede tener más de una reserva en el mismo intervalo  
+- **BR-003:** Reglas configurables por administrador (prioridades, capacidad, equipamiento)  
+- **BR-004:** Reservas dentro del horario operativo de la sede  
+- **BR-005:** Intervalo válido:
+  - Inicio < Fin  
+  - Duración mínima: 15 minutos  
+- **BR-006:** Valores de metadatos no pueden ser negativos  
+- **BR-007:** Usuario solo puede reservar en su ubicación  
+
+---
+
+# Section 6 - State Machine
+*(Pendiente de definición)*
+
+---
+
+# Section 7 - Edge Cases
+- **EC-001:** Un usuario no puede reservar más de una sala en la misma franja horaria  
+- **EC-002:** Dos usuarios intentan reservar simultáneamente la misma sala  
+- **EC-003:** Usuario no puede ver ni reservar salas de otra ubicación  
+- **EC-004:** Usuario no puede reservar fuera del horario laboral  
+
+---
+
+# Section 8 - BDD
+
+- **Caso 1**
+  - Given: Un usuario quiere reservar una sala en Bogotá  
+  - When: La sala está disponible en horario  
+  - Then: El sistema confirma la reserva  
+
+- **Caso 2**
+  - Given: Usuario con nivel menor que L5  
+  - When: Intenta reservar una sala restringida a L5  
+  - Then: El sistema rechaza y sugiere otra sala  
+
+- **Caso 3**
+  - Given: Usuario sin permisos en una sede  
+  - When: Intenta reservar  
+  - Then: El sistema rechaza la solicitud  
+
+---
+
+# Section 9 - Integration Needs
+- Servicio de Calendario (horarios, festivos, mantenimiento)  
+- Servicio de Usuarios (metadatos)  
+- Servicio de Notificaciones (emails)  
+
+---
+
+# Section 10 - Geographic Adaptations
+- Días laborables y horarios por sede (MAD, COL, MEX)  
+- Número de salas por sede y tipologías  
